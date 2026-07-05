@@ -11,6 +11,8 @@ export const authConfig: NextAuthConfig = {
       if (user) {
         token.id = user.id;
         token.role = (user as { role?: string }).role;
+        token.hasPaid = (user as { hasPaid?: boolean }).hasPaid;
+        token.planInterest = (user as { planInterest?: string | null }).planInterest;
       }
       return token;
     },
@@ -18,22 +20,35 @@ export const authConfig: NextAuthConfig = {
       if (session.user) {
         session.user.id = token.id as string;
         (session.user as { role?: string }).role = token.role as string;
+        (session.user as { hasPaid?: boolean }).hasPaid = Boolean(token.hasPaid);
+        (session.user as { planInterest?: string | null }).planInterest =
+          (token.planInterest as string | null | undefined) ?? null;
       }
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const role = (auth?.user as { role?: string })?.role;
+      const hasPaid = Boolean((auth?.user as { hasPaid?: boolean })?.hasPaid);
       const { pathname } = nextUrl;
 
       if (pathname.startsWith("/dashboard")) {
-        return isLoggedIn;
+        return isLoggedIn && role !== "trainer" && hasPaid;
+      }
+      if (pathname === "/application-status") {
+        return isLoggedIn && role !== "trainer";
       }
       if (pathname.startsWith("/coach")) {
         return isLoggedIn && role === "trainer";
       }
-      if ((pathname === "/login" || pathname === "/signup") && isLoggedIn) {
-        const dest = role === "trainer" ? "/coach" : "/dashboard";
+      if (
+        (pathname === "/login" ||
+          pathname === "/signup" ||
+          pathname === "/forgot-password" ||
+          pathname === "/reset-password") &&
+        isLoggedIn
+      ) {
+        const dest = role === "trainer" ? "/coach" : hasPaid ? "/dashboard" : "/application-status";
         return Response.redirect(new URL(dest, nextUrl));
       }
       return true;

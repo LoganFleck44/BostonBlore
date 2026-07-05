@@ -1,8 +1,12 @@
+import "dotenv/config";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { hashSync } from "bcryptjs";
 
-const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL ?? "file:./dev.db" });
+const adapter = new PrismaLibSql({
+  url: process.env.DATABASE_URL ?? "file:./dev.db",
+  authToken: process.env.DATABASE_AUTH_TOKEN,
+});
 const db = new PrismaClient({ adapter } as never);
 
 async function main() {
@@ -17,6 +21,8 @@ async function main() {
       name: "Boston Blore",
       password: hashSync("coach123", 12),
       role: "trainer",
+      hasPaid: true,
+      activatedAt: new Date(),
     },
   });
   console.log("✓ Trainer:", boston.email);
@@ -30,6 +36,10 @@ async function main() {
       name: "Jordan Mitchell",
       password: hashSync("client123", 12),
       role: "client",
+      hasPaid: true,
+      planInterest: "Full Coaching",
+      inquirySubmittedAt: new Date(),
+      activatedAt: new Date(),
       profile: {
         create: {
           goal: "Lose fat",
@@ -182,6 +192,9 @@ async function main() {
       name: "Alex Thompson",
       password: hashSync("client123", 12),
       role: "client",
+      hasPaid: false,
+      planInterest: "Online Training",
+      inquirySubmittedAt: new Date(),
       profile: {
         create: {
           goal: "Build muscle",

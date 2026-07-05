@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { z } from "zod";
 import { epley1RM, isWorkingSet, totalVolume, detectPrs } from "@/lib/workout-stats";
 import { muscleGroupFor } from "@/lib/exercises";
+import { requireActiveClientApi } from "@/lib/auth-guards";
 
 const SetSchema = z.object({
   setNumber: z.number().int().min(1),
@@ -30,8 +30,9 @@ const WorkoutSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const authResult = await requireActiveClientApi();
+  if ("response" in authResult) return authResult.response;
+  const { session } = authResult;
 
   const parsed = WorkoutSchema.safeParse(await req.json());
   if (!parsed.success) {

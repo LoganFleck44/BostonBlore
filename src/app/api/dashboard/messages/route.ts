@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { requireActiveClientApi } from "@/lib/auth-guards";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const authResult = await requireActiveClientApi();
+  if ("response" in authResult) return authResult.response;
+  const { session } = authResult;
   const { toId, body } = await req.json();
   if (!toId || !body?.trim()) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 

@@ -5,8 +5,9 @@ import Link from "next/link";
 export default async function CoachOverviewPage() {
   const session = await auth();
 
-  const [clients, pendingCheckIns, unreadMessages] = await Promise.all([
-    db.user.count({ where: { role: "client" } }),
+  const [activeClients, pendingClients, pendingCheckIns, unreadMessages] = await Promise.all([
+    db.user.count({ where: { role: "client", hasPaid: true } }),
+    db.user.count({ where: { role: "client", hasPaid: false } }),
     db.checkIn.count({ where: { trainerReply: null } }),
     db.message.count({ where: { to: { role: "trainer" }, isRead: false } }),
   ]);
@@ -20,58 +21,93 @@ export default async function CoachOverviewPage() {
 
   return (
     <div>
-      <h1 className="mb-2 font-display text-3xl font-bold uppercase">
-        Coach Dashboard
-      </h1>
-      <p className="mb-8 text-ash">Here's what needs your attention today.</p>
+      <h1 className="mb-2 font-display text-3xl font-bold uppercase">Coach Dashboard</h1>
+      <p className="mb-8 text-ash">Here&apos;s what needs your attention today.</p>
 
-      {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-3 mb-8">
+      <div className="mb-8 grid gap-4 sm:grid-cols-4">
         <div className="rounded-xl border border-ink-600 bg-ink-700 p-5">
-          <p className="text-xs uppercase tracking-widest text-ash">Total Clients</p>
-          <p className="mt-1 font-display text-3xl font-bold fire-text">{clients}</p>
+          <p className="text-xs uppercase tracking-widest text-ash">Active Clients</p>
+          <p className="mt-1 font-display text-3xl font-bold fire-text">{activeClients}</p>
         </div>
-        <Link href="/coach/checkins" className="rounded-xl border bg-ink-700 p-5 transition hover:border-ember/50 border-ink-600">
-          <p className="text-xs uppercase tracking-widest text-ash">Pending Check-Ins</p>
-          <p className={`mt-1 font-display text-3xl font-bold ${pendingCheckIns > 0 ? "text-ember" : "text-bone"}`}>{pendingCheckIns}</p>
-          {pendingCheckIns > 0 && <p className="text-xs text-ember">Need your reply →</p>}
+        <Link
+          href="/coach/clients"
+          className="rounded-xl border border-ink-600 bg-ink-700 p-5 transition hover:border-ember/50"
+        >
+          <p className="text-xs uppercase tracking-widest text-ash">Pending Payment</p>
+          <p className={`mt-1 font-display text-3xl font-bold ${pendingClients > 0 ? "text-ember" : "text-bone"}`}>
+            {pendingClients}
+          </p>
+          {pendingClients > 0 && (
+            <p className="text-xs text-ember">Applications waiting on payment {"->"}</p>
+          )}
         </Link>
-        <Link href="/coach/messages" className="rounded-xl border bg-ink-700 p-5 transition hover:border-ember/50 border-ink-600">
+        <Link
+          href="/coach/checkins"
+          className="rounded-xl border border-ink-600 bg-ink-700 p-5 transition hover:border-ember/50"
+        >
+          <p className="text-xs uppercase tracking-widest text-ash">Pending Check-Ins</p>
+          <p className={`mt-1 font-display text-3xl font-bold ${pendingCheckIns > 0 ? "text-ember" : "text-bone"}`}>
+            {pendingCheckIns}
+          </p>
+          {pendingCheckIns > 0 && <p className="text-xs text-ember">Need your reply {"->"}</p>}
+        </Link>
+        <Link
+          href="/coach/messages"
+          className="rounded-xl border border-ink-600 bg-ink-700 p-5 transition hover:border-ember/50"
+        >
           <p className="text-xs uppercase tracking-widest text-ash">Unread Messages</p>
-          <p className={`mt-1 font-display text-3xl font-bold ${unreadMessages > 0 ? "text-ember" : "text-bone"}`}>{unreadMessages}</p>
-          {unreadMessages > 0 && <p className="text-xs text-ember">New messages →</p>}
+          <p className={`mt-1 font-display text-3xl font-bold ${unreadMessages > 0 ? "text-ember" : "text-bone"}`}>
+            {unreadMessages}
+          </p>
+          {unreadMessages > 0 && <p className="text-xs text-ember">New messages {"->"}</p>}
         </Link>
       </div>
 
-      {/* Recent clients */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold uppercase">Recent Clients</h2>
-          <Link href="/coach/clients" className="text-sm text-ember hover:underline">View all →</Link>
+          <Link href="/coach/clients" className="text-sm text-ember hover:underline">
+            View all {"->"}
+          </Link>
         </div>
         <div className="space-y-3">
-          {recentClients.map((c) => {
-            const lastCheckIn = c.checkIns[0];
-            const daysSince = lastCheckIn ? Math.floor((Date.now() - new Date(lastCheckIn.date).getTime()) / 86400000) : null;
+          {recentClients.map((client) => {
+            const lastCheckIn = client.checkIns[0];
+            const daysSince = lastCheckIn
+              ? Math.floor((Date.now() - new Date(lastCheckIn.date).getTime()) / 86400000)
+              : null;
+
             return (
-              <Link key={c.id} href={`/coach/clients/${c.id}`}
-                className="flex items-center justify-between rounded-xl border border-ink-600 bg-ink-700 px-5 py-4 hover:border-ember/40 transition">
+              <Link
+                key={client.id}
+                href={`/coach/clients/${client.id}`}
+                className="flex items-center justify-between rounded-xl border border-ink-600 bg-ink-700 px-5 py-4 transition hover:border-ember/40"
+              >
                 <div>
-                  <p className="font-medium">{c.name}</p>
-                  <p className="text-xs text-ash">{c.profile?.goal ?? "No goal set"}</p>
+                  <p className="font-medium">{client.name}</p>
+                  <p className="text-xs text-ash">
+                    {(client.hasPaid ? "Active" : "Pending payment") +
+                      " - " +
+                      (client.profile?.goal ?? "No goal set")}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-ash">
                     {daysSince === null ? "No check-in yet" : `Checked in ${daysSince}d ago`}
                   </p>
+                  {!client.hasPaid && (
+                    <p className="text-xs font-semibold text-gold">Needs manual approval</p>
+                  )}
                   {lastCheckIn && !lastCheckIn.trainerReply && (
-                    <p className="text-xs text-ember font-semibold">Awaiting reply</p>
+                    <p className="text-xs font-semibold text-ember">Awaiting reply</p>
                   )}
                 </div>
               </Link>
             );
           })}
-          {recentClients.length === 0 && <p className="text-ash text-sm">No clients yet — share your signup link.</p>}
+          {recentClients.length === 0 && (
+            <p className="text-sm text-ash">No clients yet - share your signup link.</p>
+          )}
         </div>
       </div>
     </div>

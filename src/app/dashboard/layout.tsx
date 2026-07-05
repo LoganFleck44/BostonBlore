@@ -1,10 +1,8 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { requireActiveClientPage } from "@/lib/auth-guards";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
-  if (!session) redirect("/login");
+  const session = await requireActiveClientPage();
 
   return (
     <div className="flex min-h-screen bg-ink">

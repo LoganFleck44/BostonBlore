@@ -15,6 +15,10 @@ model User {
   password      String
   name          String
   role          String    @default("client") // "client" | "trainer"
+  hasPaid       Boolean   @default(false)
+  planInterest  String?
+  inquirySubmittedAt DateTime?
+  activatedAt   DateTime?
   avatarUrl     String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -31,6 +35,7 @@ model User {
   checkIns      CheckIn[]
   sentMessages     Message[]     @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Profile {
@@ -241,4 +246,14 @@ model Message {
   body        String
   isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime @default(now())
 }

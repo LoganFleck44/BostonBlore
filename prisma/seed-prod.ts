@@ -29,8 +29,8 @@ async function main() {
 
   const trainer = await db.user.upsert({
     where: { email },
-    update: { name, password: hashSync(password, 12), role: "trainer" },
-    create: { email, name, password: hashSync(password, 12), role: "trainer" },
+    update: { name, password: hashSync(password, 12), role: "trainer", hasPaid: true, activatedAt: new Date() },
+    create: { email, name, password: hashSync(password, 12), role: "trainer", hasPaid: true, activatedAt: new Date() },
   });
 
   console.log(`✅ Trainer account ready: ${trainer.email}`);

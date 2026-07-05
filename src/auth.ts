@@ -6,10 +6,19 @@ import { authConfig } from "@/auth.config";
 
 declare module "next-auth" {
   interface Session {
-    user: { id: string; name: string; email: string; role: string };
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      role: string;
+      hasPaid: boolean;
+      planInterest?: string | null;
+    };
   }
   interface User {
     role: string;
+    hasPaid: boolean;
+    planInterest?: string | null;
   }
 }
 
@@ -34,7 +43,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const valid = await compare(credentials.password as string, user.password);
         if (!valid) return null;
 
-        return { id: user.id, name: user.name, email: user.email, role: user.role };
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          hasPaid: user.hasPaid,
+          planInterest: user.planInterest,
+        };
       },
     }),
   ],

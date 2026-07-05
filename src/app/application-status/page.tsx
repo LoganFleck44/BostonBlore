@@ -1,0 +1,73 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { ButtonLink } from "@/components/ui/Button";
+import { site } from "@/lib/site";
+
+export default async function ApplicationStatusPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+  if (session.user.role === "trainer") {
+    redirect("/coach");
+  }
+  if (session.user.hasPaid) {
+    redirect("/dashboard");
+  }
+
+  return (
+    <div className="min-h-screen bg-ink px-5 py-16 text-bone">
+      <div className="mx-auto max-w-2xl rounded-3xl border border-ink-600 bg-ink-700 p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ember">
+          Application Received
+        </p>
+        <h1 className="mt-3 font-display text-4xl font-bold uppercase">
+          Your client access is pending
+        </h1>
+        <p className="mt-4 text-ash">
+          Thanks for applying for {session.user.planInterest || "coaching"}.
+          Boston has your details and your dashboard will unlock after payment is
+          confirmed manually.
+        </p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-ink-600 bg-ink-800 p-5">
+            <p className="text-xs uppercase tracking-widest text-ash">Selected plan</p>
+            <p className="mt-2 font-display text-2xl font-bold">
+              {session.user.planInterest || "Application pending"}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-ink-600 bg-ink-800 p-5">
+            <p className="text-xs uppercase tracking-widest text-ash">Need help?</p>
+            <p className="mt-2 text-sm text-bone">
+              Reach out to Boston at{" "}
+              <a href={`mailto:${site.email}`} className="text-ember hover:underline">
+                {site.email}
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <ButtonLink href="/contact" variant="outline" size="md">
+            Contact Boston
+          </ButtonLink>
+          <ButtonLink href="/" size="md">
+            Back to home
+          </ButtonLink>
+        </div>
+        <p className="mt-6 text-sm text-ash">
+          Already sent your e-transfer? Sign back in later to check whether your
+          account has been activated.
+        </p>
+        <p className="mt-3 text-sm text-ash">
+          You can also{" "}
+          <Link href="/login" className="text-ember hover:underline">
+            return to login
+          </Link>{" "}
+          at any time.
+        </p>
+      </div>
+    </div>
+  );
+}
