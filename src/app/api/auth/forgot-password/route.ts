@@ -34,11 +34,19 @@ export async function POST(req: Request) {
     },
   });
 
-  await sendPasswordResetEmail({
-    email: user.email,
-    name: user.name,
-    token,
-  });
+  try {
+    await sendPasswordResetEmail({
+      email: user.email,
+      name: user.name,
+      token,
+    });
+  } catch (error) {
+    console.error("Password reset email failed", {
+      email: user.email,
+      reason: error instanceof Error ? error.message : String(error),
+    });
+    return NextResponse.json({ error: "We could not send the reset email right now." }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

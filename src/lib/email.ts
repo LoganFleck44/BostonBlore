@@ -22,7 +22,9 @@ type SignupInquiryInput = {
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL || "bostonblore@icloud.com";
 const FROM_EMAIL =
   process.env.CONTACT_FROM_EMAIL ||
-  "Boston Blore Website <onboarding@resend.dev>";
+  "Boston Blore <hello@bostonblore.com>";
+const REPLY_TO_EMAIL = process.env.CONTACT_REPLY_TO_EMAIL || TO_EMAIL;
+const RESEND_TEST_SENDER = "onboarding@resend.dev";
 
 function esc(value: string) {
   return value.replace(/[&<>"]/g, (char) => {
@@ -67,7 +69,20 @@ async function sendEmail(payload: EmailPayload) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
+    console.error("Resend send failed", {
+      status: response.status,
+      detail,
+      from: payload.from || FROM_EMAIL,
+      to: payload.to,
+      subject: payload.subject,
+    });
     throw new Error(`Resend send failed (${response.status}): ${detail}`);
+  }
+
+  if ((payload.from || FROM_EMAIL).includes(RESEND_TEST_SENDER)) {
+    console.warn(
+      "Emails are using Resend's test sender. Delivery is limited until a real sender domain is verified.",
+    );
   }
 
   return { ok: true, mode: "sent" as const };
@@ -84,7 +99,7 @@ export async function sendSignupThankYouEmail({
 }) {
   return sendEmail({
     to: [email],
-    replyTo: TO_EMAIL,
+    replyTo: REPLY_TO_EMAIL,
     subject: "Thanks for applying for coaching with Boston Blore",
     text: `Hi ${name},
 
@@ -156,6 +171,7 @@ export async function sendPasswordResetEmail({
 
   return sendEmail({
     to: [email],
+    replyTo: REPLY_TO_EMAIL,
     subject: "Reset your Boston Blore password",
     text: `Hi ${name},
 

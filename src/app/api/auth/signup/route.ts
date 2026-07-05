@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       },
     },
   });
-  await Promise.allSettled([
+  const emailResults = await Promise.allSettled([
     sendSignupThankYouEmail({ email, name, planInterest }),
     sendSignupInquiryEmail({
       email,
@@ -60,6 +60,16 @@ export async function POST(req: Request) {
       daysPerWeek: Number.isFinite(daysPerWeek) ? daysPerWeek : 4,
     }),
   ]);
+
+  emailResults.forEach((result, index) => {
+    if (result.status === "rejected") {
+      console.error("Signup email failed", {
+        type: index === 0 ? "client-thank-you" : "coach-inquiry",
+        email,
+        reason: result.reason instanceof Error ? result.reason.message : String(result.reason),
+      });
+    }
+  });
 
   return NextResponse.json({ ok: true, userId: user.id });
 }
