@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     template: "%s | Boston Blore",
   },
   description:
-    "100% natural IFBB competitor and National Pro Qualifier. In-person personal training in Lloydminster, AB, plus online coaching, custom training splits and nutrition plans worldwide.",
+    "100% natural IFBB competitor and National Pro Qualifier. In-person personal training by enquiry, plus online coaching, custom training splits and nutrition plans worldwide.",
   keywords: [
-    "personal trainer Lloydminster",
+    "online personal trainer",
     "natural bodybuilding coach",
     "online fitness coaching",
     "IFBB competitor",

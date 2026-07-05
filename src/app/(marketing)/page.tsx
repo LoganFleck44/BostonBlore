@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { NaturalBadge } from "@/components/NaturalBadge";
 import { Section, SectionHeading } from "@/components/Section";
-import { services, stats, testimonials, site } from "@/lib/site";
+import { services, stats, testimonials } from "@/lib/site";
 
 export default function HomePage() {
   return (
@@ -24,7 +24,7 @@ export default function HomePage() {
               you're <span className="fire-text">proud of</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-ash">
-              I'm Boston — a personal trainer and nutrition coach based in {site.location}.
+              I'm Boston — a personal trainer and nutrition coach.
               I love helping people figure out what actually works for them and
               watching them make progress they didn't think was possible. Whether
               your goal is losing fat, building muscle, or stepping on stage —
@@ -39,7 +39,7 @@ export default function HomePage() {
               </ButtonLink>
             </div>
             <p className="mt-5 text-sm text-ash">
-              Online coaching worldwide · In-person in {site.location}
+              Online coaching worldwide · In-person by enquiry
             </p>
           </div>
 
@@ -79,8 +79,8 @@ export default function HomePage() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="relative order-2 aspect-[4/5] overflow-hidden rounded-2xl border border-ink-600 lg:order-1">
             <Image
-              src="/images/coaching-client.jpg"
-              alt="Boston Blore coaching a client in the gym"
+              src="/images/medal-celebration.jpg"
+              alt="Boston Blore celebrating with his medal on stage"
               fill
               sizes="(max-width: 768px) 100vw, 45vw"
               className="object-cover"
@@ -132,7 +132,7 @@ export default function HomePage() {
                   alt={s.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition duration-500 group-hover:scale-105"
+                  className={`object-cover transition duration-500 group-hover:scale-105 ${s.imagePosition ?? ""}`}
                 />
               </div>
               <div className="flex flex-1 flex-col p-6">

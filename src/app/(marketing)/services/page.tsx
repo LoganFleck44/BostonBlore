@@ -7,7 +7,7 @@ import { services } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Coaching & Services",
   description:
-    "Online training coaching, nutrition coaching, and in-person 1-on-1 personal training in Lloydminster, AB with Boston Blore.",
+    "Online training coaching, nutrition coaching, and in-person 1-on-1 personal training with Boston Blore.",
 };
 
 export default function ServicesPage() {

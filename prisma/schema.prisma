@@ -96,34 +96,52 @@ model Exercise {
   notes       String?
   videoUrl    String?
   order       Int        @default(0)
-
-  logSets     LogSet[]
 }
 
 model WorkoutLog {
   id          String     @id @default(cuid())
   userId      String
-  planId      String
+  planId      String?    // null for freestyle / empty workouts
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan        WorkoutPlan @relation(fields: [planId], references: [id])
+  plan        WorkoutPlan? @relation(fields: [planId], references: [id])
+  name        String     // e.g. "Upper A" or "Freestyle Workout"
   date        DateTime   @default(now())
-  dayLabel    String
+  durationSec Int        @default(0)
   notes       String?
-  completed   Boolean    @default(false)
 
-  logSets     LogSet[]
+  // Cached summary stats (computed at save time)
+  totalVolume Float      @default(0) // sum of weight × reps for completed working sets
+  totalSets   Int        @default(0)
+  prCount     Int        @default(0)
+
+  entries     WorkoutLogEntry[]
+}
+
+// One exercise performed within a workout (HEVY-style: exercises are
+// denormalized by name so ad-hoc exercises work and stats aggregate by name)
+model WorkoutLogEntry {
+  id          String     @id @default(cuid())
+  logId       String
+  log         WorkoutLog @relation(fields: [logId], references: [id], onDelete: Cascade)
+  name        String
+  muscleGroup String?
+  order       Int        @default(0)
+  notes       String?
+
+  sets        LogSet[]
 }
 
 model LogSet {
-  id          String     @id @default(cuid())
-  logId       String
-  exerciseId  String
-  log         WorkoutLog @relation(fields: [logId], references: [id], onDelete: Cascade)
-  exercise    Exercise   @relation(fields: [exerciseId], references: [id])
+  id          String          @id @default(cuid())
+  entryId     String
+  entry       WorkoutLogEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
   setNumber   Int
+  setType     String          @default("normal") // "warmup" | "normal" | "drop" | "failure"
   weight      Float?
   reps        Int?
-  completed   Boolean    @default(false)
+  rpe         Float?
+  isPr        Boolean         @default(false)
+  completed   Boolean         @default(true)
 }
 
 // ─── Nutrition ───────────────────────────────────────────────────────────────
@@ -200,6 +218,8 @@ model CheckIn {
   energyLevel     Int      // 1-10
   trainingAdhere  Int      // 1-10
   nutritionAdhere Int      // 1-10
+  weight          Float?   // current bodyweight this week
+  photoUrl        String?  // progress photo (data URL)
   wins            String?
   struggles       String?
   questions       String?

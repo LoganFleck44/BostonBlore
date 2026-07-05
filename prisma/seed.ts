@@ -196,6 +196,97 @@ async function main() {
   });
   console.log("✓ Client:", alex.email);
 
+  // ─── Logged workouts for Jordan (HEVY-style tracking history) ──────────────
+  const hasWorkouts = await db.workoutLog.findFirst({ where: { userId: jordan.id } });
+  if (!hasWorkouts) {
+    // Baseline working weights; each week adds a little (progressive overload)
+    const program: Record<string, { name: string; muscleGroup: string; base: number; reps: number; sets: number; inc: number }[]> = {
+      "Upper A": [
+        { name: "Bench Press", muscleGroup: "Chest", base: 175, reps: 8, sets: 4, inc: 5 },
+        { name: "Barbell Row", muscleGroup: "Back", base: 155, reps: 8, sets: 4, inc: 5 },
+        { name: "Overhead Press", muscleGroup: "Shoulders", base: 95, reps: 9, sets: 3, inc: 2.5 },
+        { name: "Pull-Ups", muscleGroup: "Back", base: 0, reps: 8, sets: 3, inc: 0 },
+        { name: "Lateral Raises", muscleGroup: "Shoulders", base: 20, reps: 13, sets: 3, inc: 0 },
+      ],
+      "Lower A": [
+        { name: "Squat", muscleGroup: "Quads", base: 225, reps: 7, sets: 4, inc: 10 },
+        { name: "Romanian Deadlift", muscleGroup: "Hamstrings", base: 185, reps: 9, sets: 3, inc: 5 },
+        { name: "Leg Press", muscleGroup: "Quads", base: 360, reps: 11, sets: 3, inc: 10 },
+        { name: "Leg Curl", muscleGroup: "Hamstrings", base: 110, reps: 11, sets: 3, inc: 5 },
+        { name: "Calf Raises", muscleGroup: "Calves", base: 180, reps: 16, sets: 4, inc: 0 },
+      ],
+      "Upper B": [
+        { name: "Incline DB Press", muscleGroup: "Chest", base: 65, reps: 9, sets: 4, inc: 2.5 },
+        { name: "Cable Row", muscleGroup: "Back", base: 150, reps: 11, sets: 4, inc: 5 },
+        { name: "DB Shoulder Press", muscleGroup: "Shoulders", base: 50, reps: 11, sets: 3, inc: 2.5 },
+        { name: "Lat Pulldown", muscleGroup: "Back", base: 140, reps: 11, sets: 3, inc: 5 },
+        { name: "Bicep Curl", muscleGroup: "Biceps", base: 30, reps: 13, sets: 3, inc: 0 },
+        { name: "Tricep Pushdown", muscleGroup: "Triceps", base: 60, reps: 13, sets: 3, inc: 2.5 },
+      ],
+      "Lower B": [
+        { name: "Deadlift", muscleGroup: "Back", base: 295, reps: 5, sets: 4, inc: 10 },
+        { name: "Bulgarian Split Squat", muscleGroup: "Quads", base: 45, reps: 11, sets: 3, inc: 0 },
+        { name: "Leg Extension", muscleGroup: "Quads", base: 130, reps: 13, sets: 3, inc: 5 },
+        { name: "Seated Leg Curl", muscleGroup: "Hamstrings", base: 115, reps: 13, sets: 3, inc: 5 },
+      ],
+    };
+    // Day-of-week offsets within each training week (Mon=Upper A … Fri=Lower B)
+    const schedule: [string, number][] = [["Upper A", 0], ["Lower A", 1], ["Upper B", 3], ["Lower B", 4]];
+
+    // Anchor: Monday three weeks back
+    const monday = new Date();
+    monday.setHours(17, 30, 0, 0);
+    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7) - 21);
+
+    for (let week = 0; week < 3; week++) {
+      for (const [label, offset] of schedule) {
+        const date = new Date(monday.getTime() + (week * 7 + offset) * 86400000);
+        if (date > new Date()) continue;
+        const exercises = program[label];
+        let totalVolume = 0;
+        let totalSets = 0;
+        let prCount = 0;
+
+        const entriesData = exercises.map((ex, order) => {
+          const weight = ex.base + ex.inc * week;
+          const isLastWeek = week === 2;
+          const sets = Array.from({ length: ex.sets }, (_, j) => {
+            const topSet = j === ex.sets - 1;
+            const reps = topSet ? ex.reps + 1 : ex.reps;
+            const isPr = isLastWeek && topSet && ex.inc > 0;
+            if (isPr) prCount++;
+            if (weight > 0) totalVolume += weight * reps;
+            totalSets++;
+            return {
+              setNumber: j + 1,
+              setType: "normal",
+              weight: weight > 0 ? weight : null,
+              reps,
+              rpe: topSet ? 9 : 7.5,
+              completed: true,
+              isPr,
+            };
+          });
+          return { name: ex.name, muscleGroup: ex.muscleGroup, order, sets: { create: sets } };
+        });
+
+        await db.workoutLog.create({
+          data: {
+            userId: jordan.id,
+            name: label,
+            date,
+            durationSec: 3300 + Math.round(Math.random() * 900),
+            totalVolume,
+            totalSets,
+            prCount,
+            entries: { create: entriesData },
+          },
+        });
+      }
+    }
+    console.log("✓ 3 weeks of logged workouts added for Jordan");
+  }
+
   // Message thread
   const hasMsg = await db.message.findFirst({ where: { fromId: jordan.id } });
   if (!hasMsg) {

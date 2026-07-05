@@ -9,8 +9,8 @@ const jsonLd = {
   description:
     "100% natural IFBB competitor and National Pro Qualifier offering online training, nutrition coaching, and in-person personal training.",
   areaServed: "Worldwide",
-  address: { "@type": "PostalAddress", addressLocality: "Lloydminster", addressRegion: "AB", addressCountry: "CA" },
   email: site.email,
+  telephone: site.phone,
   sameAs: [site.instagram],
   url: "https://bostonblore.com",
 };

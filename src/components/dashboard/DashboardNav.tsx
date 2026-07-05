@@ -5,12 +5,14 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 const clientLinks = [
-  { href: "/dashboard", label: "Overview", icon: "⊞" },
-  { href: "/dashboard/training", label: "Training", icon: "💪" },
+  { href: "/dashboard", label: "Overview", icon: "⊞", mobile: true },
+  { href: "/dashboard/training", label: "Training", icon: "💪", mobile: true },
+  { href: "/dashboard/history", label: "History", icon: "🗓" },
+  { href: "/dashboard/exercises", label: "Exercises", icon: "🏋️" },
   { href: "/dashboard/nutrition", label: "Nutrition", icon: "🥗" },
-  { href: "/dashboard/progress", label: "Progress", icon: "📈" },
-  { href: "/dashboard/checkin", label: "Check-In", icon: "✅" },
-  { href: "/dashboard/messages", label: "Messages", icon: "💬" },
+  { href: "/dashboard/progress", label: "Progress", icon: "📈", mobile: true },
+  { href: "/dashboard/checkin", label: "Check-In", icon: "✅", mobile: true },
+  { href: "/dashboard/messages", label: "Messages", icon: "💬", mobile: true },
 ];
 
 export function DashboardNav({ user }: { user: { name: string; email: string; role: string } }) {
@@ -59,7 +61,7 @@ export function DashboardNav({ user }: { user: { name: string; email: string; ro
 
       {/* Mobile bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex border-t border-ink-600 bg-ink-800 lg:hidden">
-        {clientLinks.slice(0, 5).map((l) => {
+        {clientLinks.filter((l) => l.mobile).map((l) => {
           const active = pathname === l.href || (l.href !== "/dashboard" && pathname.startsWith(l.href));
           return (
             <Link key={l.href} href={l.href}

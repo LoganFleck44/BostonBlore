@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { CheckInReplyForm } from "@/components/coach/CheckInReplyForm";
+import { PhotoThumb } from "@/components/dashboard/PhotoThumb";
 
 export default async function CoachCheckInsPage() {
   const pending = await db.checkIn.findMany({
@@ -31,10 +32,20 @@ export default async function CoachCheckInsPage() {
                   <p className="text-xs text-ash">{new Date(ci.date).toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric" })}</p>
                 </div>
                 <div className="flex gap-4 text-xs text-ash mb-2">
+                  {ci.weight != null && <span className="font-semibold text-bone">Weight: {ci.weight} lbs</span>}
                   <span>Energy: {ci.energyLevel}/10</span>
                   <span>Training: {ci.trainingAdhere}/10</span>
                   <span>Nutrition: {ci.nutritionAdhere}/10</span>
                 </div>
+                {ci.photoUrl && (
+                  <div className="mb-2">
+                    <PhotoThumb
+                      src={ci.photoUrl}
+                      dateLabel={`${ci.user.name} · ${new Date(ci.date).toLocaleDateString("en-CA", { month: "short", day: "numeric" })}`}
+                      weight={ci.weight}
+                    />
+                  </div>
+                )}
                 {ci.wins && <p className="text-sm mb-1"><span className="text-green-400">Win:</span> {ci.wins}</p>}
                 {ci.struggles && <p className="text-sm mb-1"><span className="text-ember">Struggle:</span> {ci.struggles}</p>}
                 {ci.questions && <p className="text-sm mb-2"><span className="text-gold">Question:</span> {ci.questions}</p>}

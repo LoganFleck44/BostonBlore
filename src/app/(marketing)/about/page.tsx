@@ -8,7 +8,7 @@ import { credentials, site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Boston Blore is a personal trainer and nutrition coach based in Lloydminster, AB — passionate about helping people build real, lasting results.",
+    "Boston Blore is a personal trainer and nutrition coach — passionate about helping people build real, lasting results.",
 };
 
 export default function AboutPage() {
@@ -23,7 +23,7 @@ export default function AboutPage() {
             />
             <div className="mt-6 space-y-4 text-ash leading-relaxed">
               <p>
-                I'm a personal trainer and nutrition coach based in {site.location}.
+                I'm a personal trainer and nutrition coach.
                 The short version: I genuinely love this stuff, and I love helping
                 people get somewhere they didn't think they could reach.
               </p>

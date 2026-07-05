@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 
 const goals = ["Lose fat", "Build muscle", "Compete / get on stage", "General health", "Not sure yet"];
-const interests = ["Online coaching", "Nutrition coaching", "In-person (Lloydminster)"];
+const interests = ["Online coaching", "Nutrition coaching", "In-person training"];
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");

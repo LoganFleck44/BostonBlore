@@ -11,7 +11,7 @@ export function Footer() {
           </Link>
           <p className="mt-3 max-w-sm text-sm text-ash">
             Drug-free results from a competitive natural athlete. Online training &
-            nutrition coaching worldwide, in-person in {site.location}.
+            nutrition coaching worldwide, with in-person training by enquiry.
           </p>
           <p className="mt-4 text-xs text-ash/60">Natural athlete · IFBB competitor</p>
         </div>
@@ -49,6 +49,11 @@ export function Footer() {
             <li>
               <a href={`mailto:${site.email}`} className="text-ash hover:text-ember">
                 {site.email}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`} className="text-ash hover:text-ember">
+                {site.phone}
               </a>
             </li>
             <li>

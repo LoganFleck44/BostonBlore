@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { CheckInReplyForm } from "@/components/coach/CheckInReplyForm";
+import { fmtDuration, fmtVolume } from "@/lib/workout-stats";
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -24,6 +25,18 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
   const plan = client.workoutPlans[0];
   const mealPlan = client.mealPlans[0];
+
+  const recentWorkouts = await db.workoutLog.findMany({
+    where: { userId: id },
+    orderBy: { date: "desc" },
+    take: 6,
+    include: {
+      entries: {
+        orderBy: { order: "asc" },
+        include: { sets: { orderBy: { setNumber: "asc" } } },
+      },
+    },
+  });
 
   return (
     <div>
@@ -74,7 +87,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                   <div className="flex gap-3 mt-0.5">
                     {e.weight && <span>{e.weight} lbs</span>}
                     {e.bodyFat && <span>{e.bodyFat}% BF</span>}
-                    {e.waist && <span>Waist: {e.waist}"</span>}
+                    {e.waist && <span>Waist: {e.waist}&quot;</span>}
                   </div>
                   {e.notes && <p className="text-xs text-ash italic mt-0.5">{e.notes}</p>}
                 </div>
@@ -99,6 +112,60 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Logged workouts (HEVY-style tracking) */}
+      <div className="mt-8">
+        <h2 className="mb-4 font-display text-xl font-semibold uppercase">Recent Workouts</h2>
+        {recentWorkouts.length === 0 ? (
+          <p className="text-ash">No workouts logged yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {recentWorkouts.map((log) => (
+              <details key={log.id} className="group rounded-2xl border border-ink-600 bg-ink-700 open:border-ember/40">
+                <summary className="cursor-pointer list-none px-5 py-4 [&::-webkit-details-marker]:hidden">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <span className="font-display font-semibold uppercase">{log.name}</span>
+                      <span className="ml-3 text-xs text-ash">
+                        {new Date(log.date).toLocaleDateString("en-CA", { weekday: "short", month: "short", day: "numeric" })}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-ash">
+                      <span>{fmtDuration(log.durationSec)}</span>
+                      <span>{fmtVolume(log.totalVolume)}</span>
+                      <span>{log.totalSets} sets</span>
+                      {log.prCount > 0 && <span className="font-bold text-ember">🏆 {log.prCount} PR{log.prCount > 1 ? "s" : ""}</span>}
+                    </div>
+                  </div>
+                </summary>
+                <div className="border-t border-ink-600 px-5 py-4">
+                  {log.notes && <p className="mb-3 text-sm italic text-ash">&ldquo;{log.notes}&rdquo;</p>}
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {log.entries.map((entry) => (
+                      <div key={entry.id} className="rounded-lg bg-ink-800 p-3">
+                        <p className="text-sm font-semibold">{entry.name}</p>
+                        <div className="mt-1 space-y-0.5">
+                          {entry.sets.filter((s) => s.completed).map((s, i) => (
+                            <p key={s.id} className="text-xs text-ash">
+                              <span className={s.setType === "warmup" ? "text-yellow-400" : s.setType === "drop" ? "text-purple-400" : s.setType === "failure" ? "text-red-400" : ""}>
+                                {s.setType === "warmup" ? "W" : s.setType === "drop" ? "D" : s.setType === "failure" ? "F" : `${i + 1}`}
+                              </span>
+                              {" · "}
+                              {s.weight != null && s.reps != null ? `${s.weight} lbs × ${s.reps}` : s.reps != null ? `${s.reps} reps` : "—"}
+                              {s.rpe != null && ` @ ${s.rpe}`}
+                              {s.isPr && <span className="ml-1 text-ember">🏆</span>}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Check-ins */}

@@ -17,9 +17,8 @@ export default function PricingPage() {
           center
           eyebrow="Pricing"
           title="Choose your plan"
-          intro="Simple monthly coaching. Cancel anytime. No contracts, no banned substances, no nonsense."
         />
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {packages.map((p) => (
             <div
               key={p.name}
@@ -62,7 +61,7 @@ export default function PricingPage() {
           ))}
         </div>
         <p className="mt-8 text-center text-xs text-ash">
-          Payments are handled after you sign up and complete onboarding. Prices in CAD.
+          Payments are handled after you sign up and complete onboarding.
         </p>
       </Section>
     </>

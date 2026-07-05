@@ -1,9 +1,8 @@
 export const site = {
   name: "Boston Blore",
   tagline: "Personal Trainer & Nutrition Coach",
-  location: "Lloydminster, AB",
-  email: "coaching@bostonblore.com",
-  phone: "(780) 000-0000",
+  email: "bostonblore@icloud.com",
+  phone: "639-536-0844",
   instagram: "https://www.instagram.com/bostonblore/",
   instagramHandle: "@bostonblore",
 };
@@ -39,12 +38,12 @@ export const services = [
       "Wherever you are, we can work together. I'll put together a training program built around your schedule, equipment, and goals — and we'll adjust it every week as you grow. No generic plans, no guesswork.",
     points: [
       "Custom training split updated weekly",
-      "Exercise video library for form guidance",
       "Weekly check-ins and progress tracking",
       "Direct messaging throughout the week",
     ],
     featured: true,
     image: "/images/preacher-curl.jpg",
+    imagePosition: "object-center",
   },
   {
     slug: "nutrition-coaching",
@@ -59,12 +58,13 @@ export const services = [
     ],
     featured: true,
     image: "/images/meal-prep.jpg",
+    imagePosition: "object-center",
   },
   {
     slug: "personal-training",
     title: "1-on-1 Personal Training",
     blurb:
-      "For locals in Lloydminster, AB — we train together in person. I'll coach your technique, push you when you need it, and make sure every session is purposeful. Great for people who do best with a coach in the room.",
+      "We train together in person. I'll coach your technique, push you when you need it, and make sure every session is purposeful. Great for people who do best with a coach in the room. Enquire for current availability.",
     points: [
       "Private in-person sessions",
       "Hands-on technique coaching",
@@ -72,20 +72,20 @@ export const services = [
       "Competition prep available",
     ],
     featured: false,
-    image: "/images/coaching-client.jpg",
+    image: "/images/training-boston.jpg",
+    imagePosition: "object-[center_18%]",
   },
 ];
 
 export const packages = [
   {
     name: "Online Training",
-    price: "$129",
+    price: "$250",
     cadence: "/ month",
     description: "A training program built for you, adjusted every week.",
     features: [
       "Fully custom training program",
       "Weekly check-ins",
-      "Exercise video library",
       "In-app messaging",
       "Progress tracking dashboard",
     ],
@@ -93,8 +93,22 @@ export const packages = [
     highlighted: false,
   },
   {
+    name: "Nutrition Coaching",
+    price: "$250",
+    cadence: "/ month",
+    description: "Personalized nutrition coaching to reach your goals.",
+    features: [
+      "Custom diet plan built for you",
+      "Weekly check-ins",
+      "In-app messaging",
+      "Weight tracking dashboard with progress photos",
+    ],
+    cta: "Get started",
+    highlighted: false,
+  },
+  {
     name: "Full Coaching",
-    price: "$199",
+    price: "$400",
     cadence: "/ month",
     description: "Training and nutrition, coached together.",
     features: [
@@ -111,13 +125,13 @@ export const packages = [
     name: "In-Person 1:1",
     price: "Contact",
     cadence: "for rates",
-    description: "Private sessions in Lloydminster, AB.",
+    description: "Private, in-person coaching sessions.",
     features: [
       "Private in-person sessions",
       "Hands-on technique coaching",
       "Posing & competition prep",
       "Flexible scheduling",
-      "Local to Lloydminster",
+      "Enquire for availability",
     ],
     cta: "Enquire",
     highlighted: false,
@@ -163,8 +177,8 @@ export const faqs = [
     a: "You sign up, fill out a short questionnaire about your goals and schedule, and I put your program together inside your client dashboard. Each week you log workouts, send a check-in, and I review it and adjust your plan. It's a real back-and-forth, not a PDF you download and never open.",
   },
   {
-    q: "Where are you based for in-person training?",
-    a: "Lloydminster, Alberta. If you're local, we can train together in person. Everyone else can work with me through online coaching.",
+    q: "Is in-person training available?",
+    a: "Yes — in-person training is available by enquiry. Reach out and I'll let you know current availability in your area. Everyone else can work with me through online coaching from anywhere.",
   },
   {
     q: "Can you help me prep for a competition?",

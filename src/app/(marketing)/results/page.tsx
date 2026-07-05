@@ -11,10 +11,19 @@ export const metadata: Metadata = {
 };
 
 const gallery = [
-  { src: "/images/tnt-medal-frontdouble.jpg", label: "TNT Muscle Showdown", note: "Natural division — gold" },
-  { src: "/images/stage-most-muscular.jpg", label: "IFBB Competition", note: "Toronto — natural class" },
-  { src: "/images/ifbb-stage-sidechest.jpg", label: "IFBB / NPC Stage", note: "National level" },
+  { src: "/images/tnt-medal-frontdouble.jpg", label: "TNT Muscle Showdown", note: "Classic Physique — First Overall" },
+  { src: "/images/stage-most-muscular.jpg", label: "IFBB Competition", note: "Toronto Pro Qualifier" },
+  { src: "/images/stage-sidechest-pose.jpg", label: "IFBB / NPC Stage", note: "National level" },
   { src: "/images/preacher-curl.jpg", label: "Off-Season Training", note: "The work behind the result" },
+];
+
+const transformations = [
+  {
+    src: "/images/progressphoto-lashawn.jpg",
+    name: "LaShawn",
+    result: "Leaner, stronger, and more confident",
+    note: "Months of consistent training and nutrition coaching.",
+  },
 ];
 
 export default function ResultsPage() {
@@ -47,6 +56,41 @@ export default function ResultsPage() {
       </Section>
 
       <Section className="border-t border-ink-600 bg-ink-800/40">
+        <SectionHeading
+          center
+          eyebrow="Client Transformations"
+          title="Before & after"
+          intro="Real, natural progress from clients who put in the work — no shortcuts, no gimmicks, just consistent coaching over time."
+        />
+        <div className="mx-auto mt-14 grid max-w-4xl gap-8 md:grid-cols-2">
+          {transformations.map((t) => (
+            <figure
+              key={t.src}
+              className="overflow-hidden rounded-2xl border border-ink-600 bg-ink-700"
+            >
+              <div className="relative aspect-[4/5]">
+                <Image
+                  src={t.src}
+                  alt={`${t.name} — before and after transformation`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  className="object-cover"
+                />
+                <span className="absolute left-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-bone">
+                  Before / After
+                </span>
+              </div>
+              <figcaption className="p-5">
+                <p className="font-display text-lg font-semibold uppercase">{t.name}</p>
+                <p className="text-sm text-flame">{t.result}</p>
+                <p className="mt-1 text-xs text-ash">{t.note}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Section>
+
+      <Section className="border-t border-ink-600">
         <SectionHeading center eyebrow="Client Stories" title="In their words" />
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {testimonials.map((t) => (

@@ -29,10 +29,14 @@ export default async function TrainingPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-bold uppercase">{plan.name}</h1>
           {plan.notes && <p className="mt-1 text-ash">{plan.notes}</p>}
+        </div>
+        <div className="flex gap-2">
+          <ButtonLink href="/dashboard/history" variant="outline" size="md">History</ButtonLink>
+          <ButtonLink href="/dashboard/workout" variant="outline" size="md">+ Empty Workout</ButtonLink>
         </div>
       </div>
 
@@ -41,7 +45,7 @@ export default async function TrainingPage() {
           const isToday = day.dayNumber === todayNum;
           return (
             <div key={day.id} className={`rounded-2xl border p-5 ${isToday ? "border-ember/50 bg-ember/5" : "border-ink-600 bg-ink-700"}`}>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className={`rounded-full px-2.5 py-1 text-xs font-bold uppercase ${isToday ? "bg-ember text-white" : "bg-ink-600 text-ash"}`}>
                     {days[day.dayNumber]}
@@ -49,7 +53,13 @@ export default async function TrainingPage() {
                   <h3 className="font-display text-lg font-semibold uppercase">{day.label}</h3>
                   {isToday && <span className="text-xs text-ember">Today</span>}
                 </div>
-                {day.isRest && <span className="text-xs text-ash italic">Rest day</span>}
+                {day.isRest ? (
+                  <span className="text-xs text-ash italic">Rest day</span>
+                ) : (
+                  <ButtonLink href={`/dashboard/workout?day=${day.id}`} size="md" variant={isToday ? "primary" : "outline"}>
+                    ▶ Start
+                  </ButtonLink>
+                )}
               </div>
 
               {!day.isRest && day.exercises.length > 0 && (

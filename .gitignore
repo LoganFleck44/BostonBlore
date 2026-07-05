@@ -46,3 +46,11 @@ next-env.d.ts
 *.db
 *.db-wal
 *.db-shm
+
+# macOS AppleDouble / resource-fork junk
+._*
+.DS_Store
+
+# local logs & Claude Code local settings
+*.log
+.claude/settings.local.json

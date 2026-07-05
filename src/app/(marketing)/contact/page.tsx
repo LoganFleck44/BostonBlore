@@ -24,6 +24,10 @@ export default function ContactPage() {
               <a href={`mailto:${site.email}`} className="text-lg font-medium hover:text-ember">{site.email}</a>
             </div>
             <div>
+              <p className="text-xs uppercase tracking-widest text-ash">Phone</p>
+              <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`} className="text-lg font-medium hover:text-ember">{site.phone}</a>
+            </div>
+            <div>
               <p className="text-xs uppercase tracking-widest text-ash">Instagram</p>
               <a href={site.instagram} target="_blank" rel="noreferrer" className="text-lg font-medium hover:text-ember">
                 {site.instagramHandle}
@@ -31,7 +35,7 @@ export default function ContactPage() {
             </div>
             <div>
               <p className="text-xs uppercase tracking-widest text-ash">In-Person Training</p>
-              <p className="text-lg font-medium">{site.location}</p>
+              <p className="text-lg font-medium">Available by enquiry</p>
             </div>
           </div>
         </div>
