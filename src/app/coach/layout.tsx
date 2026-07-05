@@ -10,7 +10,7 @@ export default async function CoachLayout({ children }: { children: React.ReactN
     <div className="flex min-h-screen bg-ink">
       <CoachNav user={session.user} />
       <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl px-5 py-8">
+        <div className="mx-auto max-w-6xl px-5 py-8 max-lg:pt-20 max-lg:pb-24">
           {children}
         </div>
       </main>

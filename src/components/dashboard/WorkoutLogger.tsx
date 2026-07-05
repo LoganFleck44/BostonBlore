@@ -365,7 +365,7 @@ export function WorkoutLogger({
             />
 
             {/* Set table header */}
-            <div className="grid grid-cols-[2rem_1fr_4.5rem_4rem_3rem_2.5rem_1.5rem] items-center gap-1.5 px-0.5 text-[10px] uppercase tracking-widest text-ash">
+            <div className="grid grid-cols-[1.75rem_minmax(0,1fr)_3.25rem_2.75rem_2.25rem_2rem_1.25rem] gap-1 sm:grid-cols-[2rem_1fr_4.5rem_4rem_3rem_2.5rem_1.5rem] sm:gap-1.5 items-center px-0.5 text-[10px] uppercase tracking-widest text-ash">
               <span className="text-center">Set</span>
               <span className="text-center">Previous</span>
               <span className="text-center">lbs</span>
@@ -382,7 +382,7 @@ export function WorkoutLogger({
                 return (
                   <div
                     key={set.uid}
-                    className={`grid grid-cols-[2rem_1fr_4.5rem_4rem_3rem_2.5rem_1.5rem] items-center gap-1.5 rounded-lg px-0.5 py-0.5 ${set.completed ? "bg-green-500/10" : ""}`}
+                    className={`grid grid-cols-[1.75rem_minmax(0,1fr)_3.25rem_2.75rem_2.25rem_2rem_1.25rem] gap-1 sm:grid-cols-[2rem_1fr_4.5rem_4rem_3rem_2.5rem_1.5rem] sm:gap-1.5 items-center rounded-lg px-0.5 py-0.5 ${set.completed ? "bg-green-500/10" : ""}`}
                   >
                     <button
                       type="button"

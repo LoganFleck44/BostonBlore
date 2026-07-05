@@ -13,34 +13,61 @@ const links = [
 
 export function CoachNav({ user }: { user: { name: string; email: string } }) {
   const pathname = usePathname();
+  const isActive = (href: string) =>
+    pathname === href || (href !== "/coach" && pathname.startsWith(href));
 
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r border-ink-600 bg-ink-800 lg:flex">
-      <div className="border-b border-ink-600 px-5 py-5">
-        <Link href="/" className="font-display text-lg font-bold uppercase">
-          Boston<span className="fire-text">Blore</span>
-        </Link>
-        <p className="mt-0.5 text-xs text-ember font-semibold uppercase tracking-widest">Coach Dashboard</p>
-      </div>
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-ink-600 bg-ink-800 lg:flex">
+        <div className="border-b border-ink-600 px-5 py-5">
+          <Link href="/" className="font-display text-lg font-bold uppercase">
+            Boston<span className="fire-text">Blore</span>
+          </Link>
+          <p className="mt-0.5 text-xs text-ember font-semibold uppercase tracking-widest">Coach Dashboard</p>
+        </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {links.map((l) => {
-          const active = pathname === l.href || (l.href !== "/coach" && pathname.startsWith(l.href));
-          return (
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
+          {links.map((l) => (
             <Link key={l.href} href={l.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${active ? "bg-ember/15 text-ember" : "text-ash hover:bg-ink-700 hover:text-bone"}`}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive(l.href) ? "bg-ember/15 text-ember" : "text-ash hover:bg-ink-700 hover:text-bone"}`}
             >
               <span className="text-base">{l.icon}</span>
               {l.label}
             </Link>
-          );
-        })}
-      </nav>
+          ))}
+        </nav>
 
-      <div className="border-t border-ink-600 px-4 py-4">
-        <p className="truncate text-sm font-medium">{user.name}</p>
-        <button onClick={() => signOut({ callbackUrl: "/" })} className="mt-2 text-xs text-ash hover:text-ember">Sign out</button>
-      </div>
-    </aside>
+        <div className="border-t border-ink-600 px-4 py-4">
+          <p className="truncate text-sm font-medium">{user.name}</p>
+          <button onClick={() => signOut({ callbackUrl: "/" })} className="mt-2 text-xs text-ash hover:text-ember">Sign out</button>
+        </div>
+      </aside>
+
+      {/* Mobile top bar */}
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-ink-600 bg-ink-800/95 px-5 py-3 backdrop-blur lg:hidden">
+        <Link href="/coach" className="font-display text-lg font-bold uppercase">
+          Boston<span className="fire-text">Blore</span>
+        </Link>
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="rounded-lg border border-ink-600 px-3 py-1.5 text-xs text-ash hover:border-ember hover:text-ember"
+        >
+          Sign out
+        </button>
+      </header>
+
+      {/* Mobile bottom nav */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-ink-600 bg-ink-800 lg:hidden">
+        {links.map((l) => (
+          <Link key={l.href} href={l.href}
+            className={`flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[10px] font-medium transition ${isActive(l.href) ? "text-ember" : "text-ash"}`}
+          >
+            <span className="text-lg">{l.icon}</span>
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+    </>
   );
 }

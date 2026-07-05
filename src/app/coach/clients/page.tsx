@@ -81,7 +81,83 @@ function ClientSection({
           {clients.length}
         </span>
       </div>
-      <div className="overflow-hidden rounded-2xl border border-ink-600">
+      {/* Mobile: stacked cards */}
+      <div className="space-y-3 lg:hidden">
+        {clients.length === 0 && (
+          <p className="rounded-2xl border border-ink-600 bg-ink-700 px-4 py-8 text-center text-ash">
+            {empty}
+          </p>
+        )}
+        {clients.map((client) => {
+          const lastCheckIn = client.checkIns[0] ?? null;
+          const lastCheckInDays = daysSince(lastCheckIn?.date ?? null);
+          return (
+            <div key={client.id} className="rounded-2xl border border-ink-600 bg-ink-700 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <Link href={`/coach/clients/${client.id}`} className="font-medium hover:text-ember">
+                    {client.name}
+                  </Link>
+                  <p className="truncate text-xs text-ash">{client.email}</p>
+                  <p className="mt-1 text-[11px] uppercase tracking-widest text-ash">
+                    {client.engagementStatus}
+                  </p>
+                </div>
+                <span className="shrink-0 text-right text-xs text-ash">
+                  {lastCheckInDays === null ? "Never" : `${lastCheckInDays}d ago`}
+                  {lastCheckIn && !lastCheckIn.trainerReply && (
+                    <span className="ml-1 block text-ember">Reply</span>
+                  )}
+                </span>
+              </div>
+
+              <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                <div>
+                  <dt className="text-[11px] uppercase tracking-widest text-ash">Plan</dt>
+                  <dd>{client.planInterest ?? "-"}</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] uppercase tracking-widest text-ash">Goal</dt>
+                  <dd>{client.profile?.goal ?? "-"}</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] uppercase tracking-widest text-ash">Training Plan</dt>
+                  <dd>
+                    {client.workoutPlans[0]?.name ?? (
+                      <Link href={`/coach/clients/${client.id}/plan`} className="text-ember text-xs hover:underline">
+                        + Assign
+                      </Link>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] uppercase tracking-widest text-ash">Meal Plan</dt>
+                  <dd>
+                    {client.mealPlans[0]?.name ?? (
+                      <Link href={`/coach/clients/${client.id}/meal`} className="text-ember text-xs hover:underline">
+                        + Assign
+                      </Link>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="mt-4 border-t border-ink-600 pt-3">
+                <ClientPaymentToggle
+                  clientId={client.id}
+                  clientName={client.name}
+                  hasPaid={client.hasPaid}
+                  engagementStatus={client.engagementStatus as "pending" | "active" | "inactive"}
+                  compact
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop: table */}
+      <div className="hidden overflow-hidden rounded-2xl border border-ink-600 lg:block">
         <table className="w-full text-sm">
           <thead className="border-b border-ink-600 bg-ink-800">
             <tr>

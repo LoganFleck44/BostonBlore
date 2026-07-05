@@ -48,7 +48,7 @@ export default async function ClientDetailPage({
 
   return (
     <div>
-      <div className="mb-8 flex items-start justify-between gap-4">
+      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <Link href="/coach/clients" className="text-xs text-ash hover:text-ember">
             Back to all clients
