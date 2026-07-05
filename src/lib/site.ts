@@ -27,7 +27,7 @@ export const stats = [
   { value: "1:1", label: "Personal Coaching" },
   { value: "Online", label: "Coaching Worldwide" },
   { value: "Custom", label: "Plans for Every Goal" },
-  { value: "Natural", label: "Athlete & Coach" },
+  { value: "Competitor", label: "Athlete & Coach" },
 ];
 
 export const services = [

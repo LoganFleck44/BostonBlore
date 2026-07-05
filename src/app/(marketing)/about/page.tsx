@@ -95,7 +95,7 @@ export default function AboutPage() {
               <p>
                 I coach anyone who wants to get stronger, feel better, or work
                 toward a goal — whatever that looks like for you. I happen to
-                compete as a natural athlete myself, but what I care about is
+                compete myself, but what I care about is
                 helping you build something real. That means training that makes
                 sense, food that fits your life, and progress you can actually
                 feel.

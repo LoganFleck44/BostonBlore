@@ -7,7 +7,7 @@ const jsonLd = {
   "@type": "HealthAndBeautyBusiness",
   name: site.name,
   description:
-    "100% natural IFBB competitor and National Pro Qualifier offering online training, nutrition coaching, and in-person personal training.",
+    "Classic & open bodybuilder and National Pro Qualifier offering online training, nutrition coaching, and in-person personal training.",
   areaServed: "Worldwide",
   email: site.email,
   telephone: site.phone,

@@ -19,7 +19,7 @@ export const posts: Post[] = [
     cover: "/images/ifbb-stage-sidechest.jpg",
     body: [
       "If you've ever felt like your progress is too slow, it's worth asking who you're comparing yourself to. A huge share of the physiques you see online are built with the help of performance-enhancing drugs — and that completely changes the timeline and the ceiling.",
-      "As a natural athlete, I want you to have an honest benchmark. In your first year of consistent, intelligent training and nutrition, a beginner can realistically build a noticeable amount of muscle and dramatically change their body composition. After that, progress slows — and that's normal, not failure.",
+      "I want you to have an honest benchmark. In your first year of consistent, intelligent training and nutrition, a beginner can realistically build a noticeable amount of muscle and dramatically change their body composition. After that, progress slows — and that's normal, not failure.",
       "The good news: natural results are the ones you keep. There's no crash when you stop a cycle, no health gamble, and no dependence on anything but your own habits. That's the entire point of how I coach.",
       "Focus on the levers that actually move the needle: progressive overload, enough protein, sleep, and consistency over months and years. Do that, and you'll be shocked how far natural can take you.",
     ],

@@ -16,21 +16,21 @@ const sans = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://bostonblore.com"),
   title: {
-    default: "Boston Blore | Natural IFBB Competitor & Online Coach",
+    default: "Boston Blore | Classic & Open Bodybuilder & Online Coach",
     template: "%s | Boston Blore",
   },
   description:
-    "100% natural IFBB competitor and National Pro Qualifier. In-person personal training by enquiry, plus online coaching, custom training splits and nutrition plans worldwide.",
+    "Classic & open bodybuilder and National Pro Qualifier. In-person personal training by enquiry, plus online coaching, custom training splits and nutrition plans worldwide.",
   keywords: [
     "online personal trainer",
-    "natural bodybuilding coach",
+    "classic and open bodybuilder",
     "online fitness coaching",
-    "IFBB competitor",
+    "bodybuilding coach",
     "nutrition coach",
     "Boston Blore",
   ],
   openGraph: {
-    title: "Boston Blore | Natural IFBB Competitor & Online Coach",
+    title: "Boston Blore | Classic & Open Bodybuilder & Online Coach",
     description:
       "Online training & nutrition coaching, anywhere.",
     type: "website",

@@ -90,7 +90,7 @@ export default function HomePage() {
             <SectionHeading
               eyebrow="The Approach"
               title={<>Coaching built<br />around <span className="fire-text">your life</span></>}
-              intro="I've spent years learning what actually moves the needle — naturally, sustainably, and without making the process miserable. My goal is to take all of that and make it work for you specifically, not just hand you a generic plan and wish you luck."
+              intro="I've spent years learning what actually moves the needle — sustainably and without making the process miserable. My goal is to take all of that and make it work for you specifically, not just hand you a generic plan and wish you luck."
             />
             <ul className="mt-8 space-y-4">
               {[
