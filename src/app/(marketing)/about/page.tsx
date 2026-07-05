@@ -28,8 +28,8 @@ export default function AboutPage() {
                 people get somewhere they didn't think they could reach.
               </p>
               <p>
-                I've been competing as a natural bodybuilder at the IFBB level
-                for a few years now, and the experience of going through that
+                I've been competing as a classic & open bodybuilder since I was
+                19 years old at the CPA level, and the experience of going through that
                 process — figuring out training, nutrition, and the mental side
                 of it — is a big part of what I bring to coaching. Not because
                 competing makes me better than anyone, but because I've lived

@@ -10,10 +10,9 @@ export function Footer() {
             Boston<span className="fire-text">Blore</span>
           </Link>
           <p className="mt-3 max-w-sm text-sm text-ash">
-            Drug-free results from a competitive natural athlete. Online training &
-            nutrition coaching worldwide, with in-person training by enquiry.
+            Online training & nutrition coaching worldwide, with in-person
+            training by enquiry.
           </p>
-          <p className="mt-4 text-xs text-ash/60">Natural athlete · IFBB competitor</p>
         </div>
 
         <div>
@@ -67,7 +66,7 @@ export function Footer() {
 
       <div className="border-t border-ink-600 px-5 py-5">
         <p className="mx-auto max-w-7xl text-xs text-ash">
-          © {new Date().getFullYear()} {site.name}. All rights reserved. Natural athlete — no steroids, no shortcuts.
+          © {new Date().getFullYear()} {site.name}. All rights reserved.
         </p>
       </div>
     </footer>

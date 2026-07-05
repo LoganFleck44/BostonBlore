@@ -165,10 +165,6 @@ export const faqs = [
     a: "Absolutely — beginners are some of my favourite clients to work with. You haven't built any bad habits yet, and watching someone make their first real progress is genuinely one of the best parts of coaching. Your program starts where you are, not where you think you should be.",
   },
   {
-    q: "Are you a natural athlete?",
-    a: "Yes — I compete as a natural athlete and always have. That said, I coach anyone who wants to get stronger or reach a goal, regardless of where they're coming from. My focus is on helping you make real, consistent progress.",
-  },
-  {
     q: "Do I need a gym membership for online coaching?",
     a: "Ideally yes, but it's not always required. During onboarding you tell me what equipment you have and I build around it — whether that's a commercial gym, a home setup, or something in between.",
   },
@@ -182,7 +178,7 @@ export const faqs = [
   },
   {
     q: "Can you help me prep for a competition?",
-    a: "Yes. I've competed at the IFBB level and gone through the prep process myself, so I understand what it actually takes. Competition prep is available through both online and in-person coaching.",
+    a: "Yes. I've competed in many bodybuilding competitions.",
   },
   {
     q: "What makes this different from a generic online program?",

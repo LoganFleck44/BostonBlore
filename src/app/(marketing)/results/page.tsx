@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const gallery = [
   { src: "/images/tnt-medal-frontdouble.jpg", label: "TNT Muscle Showdown", note: "Classic Physique — First Overall" },
-  { src: "/images/stage-most-muscular.jpg", label: "IFBB Competition", note: "Toronto Pro Qualifier" },
+  { src: "/images/stage-most-muscular.jpg", label: "National Pro Qualifier Competition", note: "Toronto Pro Qualifier" },
   { src: "/images/stage-sidechest-pose.jpg", label: "IFBB / NPC Stage", note: "National level" },
   { src: "/images/preacher-curl.jpg", label: "Off-Season Training", note: "The work behind the result" },
 ];

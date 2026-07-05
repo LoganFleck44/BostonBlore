@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Boston Blore | Natural IFBB Competitor & Online Coach",
     description:
-      "Drug-free results from a competitive natural athlete. Online training & nutrition coaching, anywhere.",
+      "Online training & nutrition coaching, anywhere.",
     type: "website",
     images: ["/images/tnt-medal-frontdouble.jpg"],
   },
