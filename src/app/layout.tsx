@@ -14,7 +14,7 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bostonblore.com"),
+  metadataBase: new URL("https://www.bostonblore.com"),
   title: {
     default: "Boston Blore | Classic & Open Bodybuilder & Online Coach",
     template: "%s | Boston Blore",
@@ -34,7 +34,11 @@ export const metadata: Metadata = {
     description:
       "Online training & nutrition coaching, anywhere.",
     type: "website",
+    url: "https://www.bostonblore.com",
     images: ["/images/tnt-medal-frontdouble.jpg"],
+  },
+  alternates: {
+    canonical: "https://www.bostonblore.com",
   },
 };
 
