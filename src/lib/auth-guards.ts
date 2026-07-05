@@ -15,7 +15,7 @@ export async function requireActiveClientPage() {
   if (session.user.role === "trainer") {
     redirect("/coach");
   }
-  if (!session.user.hasPaid) {
+  if (!session.user.hasPaid || session.user.engagementStatus !== "active") {
     redirect("/application-status");
   }
   return session;
@@ -34,7 +34,11 @@ export async function requireActiveClientApi() {
   if (!session) {
     return { response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
   }
-  if (session.user.role !== "client" || !session.user.hasPaid) {
+  if (
+    session.user.role !== "client" ||
+    !session.user.hasPaid ||
+    session.user.engagementStatus !== "active"
+  ) {
     return { response: NextResponse.json({ error: "Account not active yet" }, { status: 403 }) };
   }
   return { session };

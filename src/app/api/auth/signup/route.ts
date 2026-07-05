@@ -31,6 +31,7 @@ export async function POST(req: Request) {
       password: hashed,
       role: "client",
       hasPaid: false,
+      engagementStatus: "pending",
       planInterest,
       inquirySubmittedAt: new Date(),
       profile: {

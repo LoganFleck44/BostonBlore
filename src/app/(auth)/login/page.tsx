@@ -41,7 +41,14 @@ function LoginPageInner() {
     const session = await fetch("/api/auth/session").then((response) => response.json());
     const role = session?.user?.role;
     const hasPaid = Boolean(session?.user?.hasPaid);
-    router.push(role === "trainer" ? "/coach" : hasPaid ? "/dashboard" : "/application-status");
+    const engagementStatus = session?.user?.engagementStatus || "pending";
+    router.push(
+      role === "trainer"
+        ? "/coach"
+        : hasPaid && engagementStatus === "active"
+          ? "/dashboard"
+          : "/application-status",
+    );
   }
 
   const field =

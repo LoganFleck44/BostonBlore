@@ -12,12 +12,14 @@ declare module "next-auth" {
       email: string;
       role: string;
       hasPaid: boolean;
+      engagementStatus: string;
       planInterest?: string | null;
     };
   }
   interface User {
     role: string;
     hasPaid: boolean;
+    engagementStatus: string;
     planInterest?: string | null;
   }
 }
@@ -49,6 +51,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           role: user.role,
           hasPaid: user.hasPaid,
+          engagementStatus: user.engagementStatus,
           planInterest: user.planInterest,
         };
       },

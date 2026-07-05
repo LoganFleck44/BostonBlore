@@ -22,6 +22,7 @@ async function main() {
       password: hashSync("coach123", 12),
       role: "trainer",
       hasPaid: true,
+      engagementStatus: "active",
       activatedAt: new Date(),
     },
   });
@@ -37,6 +38,7 @@ async function main() {
       password: hashSync("client123", 12),
       role: "client",
       hasPaid: true,
+      engagementStatus: "active",
       planInterest: "Full Coaching",
       inquirySubmittedAt: new Date(),
       activatedAt: new Date(),
@@ -193,6 +195,7 @@ async function main() {
       password: hashSync("client123", 12),
       role: "client",
       hasPaid: false,
+      engagementStatus: "pending",
       planInterest: "Online Training",
       inquirySubmittedAt: new Date(),
       profile: {

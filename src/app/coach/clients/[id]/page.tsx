@@ -58,10 +58,18 @@ export default async function ClientDetailPage({
           <div className="mt-3 flex flex-wrap gap-2">
             <span
               className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest ${
-                client.hasPaid ? "bg-emerald-500/15 text-emerald-300" : "bg-gold/15 text-gold"
+                client.engagementStatus === "active"
+                  ? "bg-emerald-500/15 text-emerald-300"
+                  : client.engagementStatus === "inactive"
+                    ? "bg-sky-500/15 text-sky-300"
+                    : "bg-gold/15 text-gold"
               }`}
             >
-              {client.hasPaid ? "Paying client" : "Pending payment"}
+              {client.engagementStatus === "active"
+                ? "Active client"
+                : client.engagementStatus === "inactive"
+                  ? "Inactive client"
+                  : "Pending payment"}
             </span>
             {client.planInterest && (
               <span className="rounded-full border border-ink-600 px-3 py-1 text-xs uppercase tracking-widest text-ash">
@@ -71,7 +79,12 @@ export default async function ClientDetailPage({
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <ClientPaymentToggle clientId={id} hasPaid={client.hasPaid} />
+          <ClientPaymentToggle
+            clientId={id}
+            clientName={client.name}
+            hasPaid={client.hasPaid}
+            engagementStatus={client.engagementStatus as "pending" | "active" | "inactive"}
+          />
           <ButtonLink href={`/coach/clients/${id}/plan`} variant="outline" size="md">
             {plan ? "Edit Plan" : "+ Assign Plan"}
           </ButtonLink>
@@ -88,6 +101,10 @@ export default async function ClientDetailPage({
             <div className="flex justify-between border-b border-ink-600 py-1.5">
               <span className="text-ash">Payment</span>
               <span>{client.hasPaid ? "Confirmed" : "Waiting on e-transfer"}</span>
+            </div>
+            <div className="flex justify-between border-b border-ink-600 py-1.5">
+              <span className="text-ash">Lifecycle</span>
+              <span className="capitalize">{client.engagementStatus}</span>
             </div>
             <div className="flex justify-between border-b border-ink-600 py-1.5">
               <span className="text-ash">Plan selected</span>

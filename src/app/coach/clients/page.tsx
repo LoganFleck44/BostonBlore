@@ -19,8 +19,9 @@ export default async function ClientsPage() {
     orderBy: [{ hasPaid: "asc" }, { createdAt: "desc" }],
   });
 
-  const pendingClients = clients.filter((client) => !client.hasPaid);
-  const activeClients = clients.filter((client) => client.hasPaid);
+  const pendingClients = clients.filter((client) => client.engagementStatus === "pending");
+  const activeClients = clients.filter((client) => client.engagementStatus === "active");
+  const inactiveClients = clients.filter((client) => client.engagementStatus === "inactive");
 
   return (
     <div className="space-y-8">
@@ -41,6 +42,11 @@ export default async function ClientsPage() {
         empty="No active clients yet."
         clients={activeClients}
       />
+      <ClientSection
+        title="Inactive Clients"
+        empty="No inactive clients."
+        clients={inactiveClients}
+      />
     </div>
   );
 }
@@ -57,6 +63,7 @@ function ClientSection({
     name: string;
     email: string;
     hasPaid: boolean;
+    engagementStatus: string;
     planInterest: string | null;
     profile: {
       goal: string | null;
@@ -78,7 +85,7 @@ function ClientSection({
         <table className="w-full text-sm">
           <thead className="border-b border-ink-600 bg-ink-800">
             <tr>
-              {["Client", "Plan", "Goal", "Training Plan", "Meal Plan", "Last Check-In", "Payment"].map((header) => (
+              {["Client", "Plan", "Goal", "Training Plan", "Meal Plan", "Last Check-In", "Actions"].map((header) => (
                 <th
                   key={header}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-ash"
@@ -100,6 +107,9 @@ function ClientSection({
                       {client.name}
                     </Link>
                     <p className="text-xs text-ash">{client.email}</p>
+                    <p className="mt-1 text-[11px] uppercase tracking-widest text-ash">
+                      {client.engagementStatus}
+                    </p>
                   </td>
                   <td className="px-4 py-3 text-ash">{client.planInterest ?? "-"}</td>
                   <td className="px-4 py-3 text-ash">{client.profile?.goal ?? "-"}</td>
@@ -130,7 +140,13 @@ function ClientSection({
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <ClientPaymentToggle clientId={client.id} hasPaid={client.hasPaid} />
+                    <ClientPaymentToggle
+                      clientId={client.id}
+                      clientName={client.name}
+                      hasPaid={client.hasPaid}
+                      engagementStatus={client.engagementStatus as "pending" | "active" | "inactive"}
+                      compact
+                    />
                   </td>
                 </tr>
               );

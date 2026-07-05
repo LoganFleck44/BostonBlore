@@ -16,6 +16,7 @@ model User {
   name          String
   role          String    @default("client") // "client" | "trainer"
   hasPaid       Boolean   @default(false)
+  engagementStatus String @default("pending") // "pending" | "active" | "inactive"
   planInterest  String?
   inquirySubmittedAt DateTime?
   activatedAt   DateTime?
